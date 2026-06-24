@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مرجع مصطلحات Dip IFRS</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Tajawal:wght@400;500;700&display=swap');
+
+  :root {
+    --bg: #0f1117;
+    --surface: #181c27;
+    --card: #1e2335;
+    --border: #2a3050;
+    --accent: #4f8ef7;
+    --accent2: #7c5cbf;
+    --gold: #e2a84b;
+    --text: #d4daf0;
+    --muted: #7a84a6;
+    --green: #3ecf8e;
+    --red: #f75f5f;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Tajawal', sans-serif;
+    min-height: 100vh;
+    padding: 20px 16px 60px;
+  }
+
+  header {
+    text-align: center;
+    padding: 32px 0 28px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 28px;
+  }
+
+  .logo-line {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--accent);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: 'Tajawal', sans-serif;
+    font-size: 15px;
+    padding: 12px 16px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  input[type="text"]:focus { border-color: var(--accent); }
+  input[type="text"]::placeholder { color: var(--muted); }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .filter-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 13px;
+    padding: 6px 14px;
+    transition: all 0.2s;
+  }
+
+  .filter-btn.active, .filter-btn:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  .stats {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    text-align: right;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--tag-color, var(--accent));
+    border-radius: 0 12px 12px 0;
+  }
+
+  .card:hover { border-color: var(--accent); transform: translateX(-2px); }
+  .card.expanded { border-color: var(--accent); }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .abbr-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    padding: 4px 10px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    flex: 1;
+  }
+
+  .card-arabic {
+    font-size: 13px;
+    color: var(--gold);
+    margin-top: 4px;
+  }
+
+  .tag {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    border: 1px solid;
+    white-space: nowrap;
+  }
+
+  .arrow {
+    font-size: 12px;
+    color: var(--muted);
+    transition: transform 0.2s;
+  }
+  .card.expanded .arrow { transform: rotate(90deg); }
+
+  .speak-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--accent);
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+
+  .speak-btn:hover {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    transform: scale(1.08);
+  }
+
+  .speak-btn.playing {
+    background: var(--accent);
+    color: #fff;
+    animation: pulse 0.9s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(79,142,247,0.5); }
+    50% { box-shadow: 0 0 0 6px rgba(79,142,247,0); }
+  }
+
+  .speak-btn-inline {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--accent);
+    font-size: 12px;
+    padding: 5px 10px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+    font-family: 'Tajawal', sans-serif;
+    transition: all 0.2s;
+  }
+
+  .speak-btn-inline:hover {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+
+  .card-body {
+    display: none;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  .card.expanded .card-body { display: block; }
+
+  .def-label {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .def-text {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.8;
+    margin-bottom: 12px;
+    direction: rtl;
+  }
+
+  .example-box {
+    background: var(--bg);
+    border-right: 3px solid var(--green);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 12px;
+    font-size: 13px;
+    color: #b5c0d8;
+    margin-top: 8px;
+    line-height: 1.7;
+    direction: rtl;
+  }
+
+  .example-box strong { color: var(--green); }
+
+  .no-results {
+    text-align: center;
+    color: var(--muted);
+    padding: 60px 20px;
+    font-size: 15px;
+  }
+
+  /* Tag colors */
+  .tag-standard { color: #4f8ef7; border-color: #4f8ef7; }
+  .tag-concept  { color: #3ecf8e; border-color: #3ecf8e; }
+  .tag-fs       { color: #e2a84b; border-color: #e2a84b; }
+  .tag-sopl     { color: #f9a03f; border-color: #f9a03f; }
+  .tag-sofp     { color: #38bdf8; border-color: #38bdf8; }
+  .tag-measure  { color: #f75f5f; border-color: #f75f5f; }
+  .tag-exam     { color: #a78bfa; border-color: #a78bfa; }
+
+  .card[data-cat="standard"] { --tag-color: #4f8ef7; }
+  .card[data-cat="concept"]  { --tag-color: #3ecf8e; }
+  .card[data-cat="fs"]       { --tag-color: #e2a84b; }
+  .card[data-cat="sopl"]     { --tag-color: #f9a03f; }
+  .card[data-cat="sofp"]     { --tag-color: #38bdf8; }
+  .card[data-cat="measure"]  { --tag-color: #f75f5f; }
+  .card[data-cat="exam"]     { --tag-color: #a78bfa; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-line">Dip IFRS · Quick Reference</div>
+  <h1>مصطلحات واختصارات IFRS</h1>
+  <p class="subtitle">اضغط على أي بطاقة لرؤية التعريف والمثال</p>
+</header>
+
+<div class="controls">
+  <input type="text" id="search" placeholder="🔍  ابحث بالاختصار أو الاسم الإنجليزي أو العربي..." oninput="render()">
+  <div class="filters">
+    <button class="filter-btn active" onclick="setFilter('all',this)">الكل</button>
+    <button class="filter-btn" onclick="setFilter('standard',this)">المعايير</button>
+    <button class="filter-btn" onclick="setFilter('sopl',this)">SOPL بنود</button>
+    <button class="filter-btn" onclick="setFilter('sofp',this)">SOFP بنود</button>
+    <button class="filter-btn" onclick="setFilter('fs',this)">القوائم (عام)</button>
+    <button class="filter-btn" onclick="setFilter('concept',this)">المفاهيم</button>
+    <button class="filter-btn" onclick="setFilter('measure',this)">القياس</button>
+    <button class="filter-btn" onclick="setFilter('exam',this)">الامتحان</button>
+  </div>
+</div>
+
+<div class="stats" id="stats"></div>
+<div class="grid" id="grid"></div>
+
+<script>
+const data = [
+  // ── STANDARDS ───────────────────────────────────────────────
+  { abbr:"IFRS",  en:"International Financial Reporting Standards", ar:"معايير التقارير المالية الدولية", cat:"standard",
+    def:"المعايير الدولية الصادرة عن مجلس معايير المحاسبة الدولية (IASB) التي تُلزم الشركات بطريقة موحدة لإعداد قوائمها المالية.",
+    ex:"<strong>مثال:</strong> شركة سعودية مدرجة في السوق المالية تُعد قوائمها وفق IFRS بدلاً من المعايير المحلية." },
+
+  { abbr:"IAS",   en:"International Accounting Standards", ar:"معايير المحاسبة الدولية", cat:"standard",
+    def:"المعايير القديمة الصادرة قبل 2001 من IASC (السلف لـ IASB). لا تزال سارية المفعول كـ IAS 16, IAS 36...",
+    ex:"<strong>فرق رئيسي:</strong> IAS = المعايير القديمة | IFRS = المعايير الجديدة بعد 2001." },
+
+  { abbr:"IAS 1",  en:"Presentation of Financial Statements", ar:"عرض القوائم المالية", cat:"standard",
+    def:"يُحدد الحد الأدنى لمحتوى القوائم المالية وشروط عرضها بشكل عادل. ⚠️ تم استبداله بـ IFRS 18 اعتبارًا من 2025.",
+    ex:"<strong>للامتحان Dec 2025 / Jun 2026:</strong> IFRS 18 هو المعيار المعمول به الآن بدلًا من IAS 1. راجع IFRS 18 في هذا المرجع." },
+
+  { abbr:"IAS 16", en:"Property, Plant & Equipment", ar:"الممتلكات والآلات والمعدات", cat:"standard",
+    def:"يُعالج الاعتراف والقياس والإهلاك والاستبعاد للأصول الثابتة الملموسة طويلة الأمد.",
+    ex:"<strong>مثال:</strong> سيارة شُريت بـ 100,000 ر.س. تُهلك على مدى 5 سنوات = إهلاك سنوي 20,000 ر.س." },
+
+  { abbr:"IAS 36", en:"Impairment of Assets", ar:"انخفاض قيمة الأصول", cat:"standard",
+    def:"يُلزم المنشأة باختبار الأصول للتأكد أن قيمتها الدفترية لا تتجاوز قيمتها القابلة للاسترداد.",
+    ex:"<strong>مثال:</strong> معدة قيمتها الدفترية 50,000 لكن قيمتها القابلة للاسترداد 35,000 → خسارة اضمحلال 15,000." },
+
+  { abbr:"IAS 38", en:"Intangible Assets", ar:"الأصول غير الملموسة", cat:"standard",
+    def:"يُعالج الاعتراف والقياس للأصول غير الملموسة كبراءات الاختراع والعلامات التجارية والبرمجيات.",
+    ex:"<strong>ملاحظة امتحانية:</strong> نفقات البحث تُحمَّل مباشرة على الدخل، أما نفقات التطوير فتُرسمل إذا استوفت شروط IAS 38." },
+
+  { abbr:"IFRS 9", en:"Financial Instruments", ar:"الأدوات المالية", cat:"standard",
+    def:"يُحدد كيفية تصنيف وقياس الأدوات المالية (أسهم، سندات، قروض) وكيفية حساب خسائر الائتمان المتوقعة.",
+    ex:"<strong>نماذج القياس:</strong> التكلفة المطفأة | القيمة العادلة عبر الدخل الشامل | القيمة العادلة عبر الربح والخسارة." },
+
+  { abbr:"IFRS 15", en:"Revenue from Contracts with Customers", ar:"الإيراد من العقود مع العملاء", cat:"standard",
+    def:"يُحدد طريقة الاعتراف بالإيراد في 5 خطوات تضمن إظهار الإيراد حين يتم نقل السلعة/الخدمة للعميل.",
+    ex:"<strong>الخطوات الخمس:</strong> 1) تحديد العقد → 2) تحديد التزامات الأداء → 3) تحديد سعر المعاملة → 4) التخصيص → 5) الاعتراف." },
+
+  { abbr:"IFRS 16", en:"Leases", ar:"عقود الإيجار", cat:"standard",
+    def:"يُلزم المستأجر بالاعتراف بجميع عقود الإيجار (أكثر من 12 شهرًا) كأصل حق الاستخدام والتزام إيجار.",
+    ex:"<strong>قبل IFRS 16:</strong> الإيجار التشغيلي لا يظهر في الميزانية. <strong>بعده:</strong> يظهر أصل والتزام." },
+
+  { abbr:"IAS 8",  en:"Basis of Preparation of Financial Statements", ar:"أساس إعداد القوائم المالية", cat:"standard",
+    def:"يُحدد السياسات المحاسبية وكيفية معالجة التغيرات فيها، والأخطاء المحاسبية، والتغيرات في التقديرات.",
+    ex:"<strong>ثلاث حالات:</strong> تغيير سياسة محاسبية (تطبيق بأثر رجعي) | تغيير تقدير (تطبيق مستقبلي) | تصحيح خطأ (تطبيق بأثر رجعي)." },
+
+  { abbr:"IAS 20", en:"Accounting for Government Grants", ar:"المحاسبة عن المنح الحكومية", cat:"standard",
+    def:"يُعالج الاعتراف بالمنح الحكومية وكيفية الإفصاح عنها والمساعدات الحكومية الأخرى.",
+    ex:"<strong>طريقتان:</strong> عرض المنحة كإيراد مؤجل (Deferred Income) أو خصمها من قيمة الأصل مباشرة." },
+
+  { abbr:"IAS 21", en:"Effects of Changes in Foreign Exchange Rates", ar:"آثار التغيرات في أسعار صرف العملات الأجنبية", cat:"standard",
+    def:"يُحدد كيفية تحويل المعاملات والأرصدة بالعملة الأجنبية إلى عملة التقرير، وكيفية ترجمة القوائم المالية للعمليات الأجنبية.",
+    ex:"<strong>البنود النقدية</strong> (نقدية، ذمم) تُترجم بسعر الإغلاق → فروق الصرف في P&L.<br><strong>البنود غير النقدية</strong> (PPE) تبقى بالسعر التاريخي." },
+
+  { abbr:"IAS 23", en:"Borrowing Costs", ar:"تكاليف الاقتراض", cat:"standard",
+    def:"يُلزم بتحميل تكاليف الاقتراض المتعلقة مباشرةً بإنشاء أو شراء أو إنتاج أصل مؤهَّل على تكلفة ذلك الأصل.",
+    ex:"<strong>الأصل المؤهَّل:</strong> أصل يستغرق إعداده للاستخدام أو البيع فترة طويلة (مبنى قيد الإنشاء، مصنع).<br>باقي تكاليف الاقتراض → مصروف في P&L." },
+
+  { abbr:"IAS 24", en:"Related Party Disclosures", ar:"إفصاحات الأطراف ذات الصلة", cat:"standard",
+    def:"يُلزم بالإفصاح عن المعاملات والأرصدة مع الأطراف ذات الصلة (أقارب الإدارة، الشركات التابعة، المساهمون الرئيسيون).",
+    ex:"<strong>مثال:</strong> بيع منشأة لأصل لشركة يملكها المدير التنفيذي → يجب الإفصاح عن قيمة الصفقة والشروط." },
+
+  { abbr:"IAS 27", en:"Separate Financial Statements", ar:"القوائم المالية المنفصلة", cat:"standard",
+    def:"يُنظّم القوائم المالية المنفصلة للشركة الأم حين تختار (أو تُلزَم) بعرض قوائمها بشكل منفصل عن القوائم الموحدة.",
+    ex:"<strong>في القوائم المنفصلة:</strong> الاستثمار في التابعة يُقاس بالتكلفة أو بـ FVTPL وفق IFRS 9." },
+
+  { abbr:"IAS 28", en:"Investments in Associates and Joint Ventures", ar:"الاستثمارات في الشركات الزميلة والمشاريع المشتركة", cat:"standard",
+    def:"يُحدد محاسبة الاستثمارات في الشركات الزميلة (تأثير ملموس 20-50%) والمشاريع المشتركة باستخدام طريقة حقوق الملكية.",
+    ex:"<strong>طريقة حقوق الملكية:</strong> تكلفة الاستثمار + حصة المستثمر في الأرباح − التوزيعات المستلمة." },
+
+  { abbr:"IAS 32", en:"Financial Instruments: Presentation", ar:"الأدوات المالية: العرض", cat:"standard",
+    def:"يُحدد كيفية تصنيف الأدوات المالية كحقوق ملكية أو التزامات، وقواعد تقاص الأصول والالتزامات المالية.",
+    ex:"<strong>مثال:</strong> الأسهم الممتازة القابلة للاسترداد إلزاميًا = التزام مالي وليس حقوق ملكية رغم اسمها." },
+
+  { abbr:"IAS 40", en:"Investment Property", ar:"العقارات الاستثمارية", cat:"standard",
+    def:"يُعالج العقارات المحتفظ بها لتوليد دخل إيجار أو لزيادة القيمة الرأسمالية أو كليهما، لا للاستخدام الذاتي أو البيع.",
+    ex:"<strong>نموذجان:</strong> نموذج التكلفة (كـ IAS 16) | نموذج القيمة العادلة (التغير في FV → P&L مباشرة)." },
+
+  { abbr:"IAS 41", en:"Agriculture", ar:"الزراعة", cat:"standard",
+    def:"يُعالج محاسبة الأصول البيولوجية (حيوانات ونباتات حية) والإنتاج الزراعي عند نقطة الحصاد.",
+    ex:"<strong>الأصول البيولوجية</strong> تُقاس بالقيمة العادلة مطروحًا منها تكاليف البيع. مثال: قطيع أبقار، بستان فاكهة." },
+
+  { abbr:"IFRS 2", en:"Share-based Payment", ar:"الدفع على أساس الأسهم", cat:"standard",
+    def:"يُعالج المعاملات التي تدفع فيها المنشأة مقابل البضاعة أو الخدمات باستخدام أسهمها أو خياراتها.",
+    ex:"<strong>مثال شائع:</strong> منح موظفين خيارات أسهم (Stock Options) → تُقاس بالقيمة العادلة في تاريخ المنح وتُحمَّل على P&L على مدى فترة الاستحقاق." },
+
+  { abbr:"IFRS 5", en:"Non-current Assets Held for Sale & Discontinued Operations", ar:"الأصول غير المتداولة المحتفظ بها للبيع والعمليات المتوقفة", cat:"standard",
+    def:"يُحدد متطلبات تصنيف وقياس الأصول المُزمع بيعها وعرض العمليات المتوقفة في القوائم المالية.",
+    ex:"<strong>شروط التصنيف كـ Held for Sale:</strong> متاح للبيع فورًا + البيع مرجح خلال 12 شهرًا → يُقاس بالأدنى من CV أو FV ناقص تكاليف البيع، ويُوقف إهلاكه." },
+
+  { abbr:"IFRS 6", en:"Exploration for and Evaluation of Mineral Resources", ar:"الاستكشاف عن الموارد المعدنية وتقييمها", cat:"standard",
+    def:"يُحدد المعالجة المحاسبية لنفقات الاستكشاف والتقييم للموارد المعدنية (نفط، غاز، معادن) قبل إثبات الجدوى التجارية.",
+    ex:"<strong>استثناء مؤقت:</strong> يسمح لشركات التعدين بالاستمرار في سياساتها المحاسبية السابقة ريثما يُصدر IASB معيارًا شاملًا." },
+
+  { abbr:"IFRS 8", en:"Operating Segments", ar:"القطاعات التشغيلية", cat:"standard",
+    def:"يُلزم المنشآت المدرجة بالإفصاح عن معلومات قطاعاتها التشغيلية استنادًا إلى التقارير الداخلية المقدمة لصانع القرار الرئيسي.",
+    ex:"<strong>مثال:</strong> شركة متعددة الأنشطة (تجزئة + عقارات + مالية) تُفصح عن كل قطاع بإيراداته وأرباحه وأصوله." },
+
+  { abbr:"IFRS 10", en:"Consolidated Financial Statements", ar:"القوائم المالية الموحدة", cat:"standard",
+    def:"يُحدد مفهوم السيطرة ومتطلبات إعداد القوائم الموحدة. السيطرة = القدرة + التعرض للعوائد + القدرة على التأثير في تلك العوائد.",
+    ex:"<strong>ثلاثة عناصر للسيطرة:</strong> 1) القوة على المنشأة | 2) التعرض للعوائد المتغيرة | 3) القدرة على استخدام القوة للتأثير في العوائد." },
+
+  { abbr:"IFRS 11", en:"Joint Arrangements", ar:"الترتيبات المشتركة", cat:"standard",
+    def:"يُصنّف الترتيبات المشتركة إلى نوعين: عمليات مشتركة (Joint Operations) أو مشاريع مشتركة (Joint Ventures).",
+    ex:"<strong>Joint Operation:</strong> كل طرف يُعترف بحصته في الأصول والالتزامات والإيرادات والمصاريف مباشرة.<br><strong>Joint Venture:</strong> يُحاسب بطريقة حقوق الملكية (IAS 28)." },
+
+  { abbr:"IFRS 12", en:"Disclosure of Interests in Other Entities", ar:"الإفصاح عن الحصص في المنشآت الأخرى", cat:"standard",
+    def:"يُلزم بالإفصاح الشامل عن طبيعة الحصص في التابعات والزميلات والمشاريع المشتركة والكيانات غير المُدرجة في التوحيد.",
+    ex:"<strong>الهدف:</strong> تمكين مستخدمي القوائم من تقييم طبيعة ومخاطر الحصص في الكيانات الأخرى وآثارها المالية." },
+
+  { abbr:"IFRS 18", en:"Presentation & Disclosure in Financial Statements", ar:"العرض والإفصاح في القوائم المالية", cat:"standard",
+    def:"المعيار الجديد (2025) الذي يحل محل IAS 1. يُقدم هيكلًا أوضح لقائمة الأرباح والخسائر بتصنيف بنودها في 5 فئات.",
+    ex:"<strong>الفئات الخمس في SOPL:</strong> 1) التشغيل | 2) الاستثمار | 3) التمويل | 4) ضريبة الدخل | 5) العمليات المتوقفة.<br><strong>مهم للامتحان:</strong> سيكون examinable من December 2025." },
+
+  { abbr:"IFRS 19", en:"Subsidiaries without Public Accountability: Disclosures", ar:"الشركات التابعة غير الخاضعة للمساءلة العامة: الإفصاحات", cat:"standard",
+    def:"يُخفف متطلبات الإفصاح على الشركات التابعة غير المدرجة التي تستخدم IFRS الكاملة، مما يُقلل العبء التقريري.",
+    ex:"<strong>الشرط:</strong> أن تكون الشركة الأم تُعد قوائم موحدة متاحة للعموم وتطبق IFRS الكاملة." },
+
+  { abbr:"IFRS SMEs", en:"IFRS for Small and Medium-sized Entities", ar:"IFRS للمنشآت الصغيرة والمتوسطة", cat:"standard",
+    def:"نسخة مبسطة ومختصرة من IFRS الكاملة مصممة للمنشآت التي لا تمتلك مساءلة عامة (غير مدرجة).",
+    ex:"<strong>مزاياه:</strong> أقل تعقيدًا (300 صفحة مقابل 3000+ للكاملة) | تحديثات أقل تكرارًا | متطلبات إفصاح أبسط." },
+
+  { abbr:"IFRS S1", en:"General Requirements for Sustainability-related Financial Disclosures", ar:"المتطلبات العامة للإفصاحات المالية المتعلقة بالاستدامة", cat:"standard",
+    def:"أول معيار إفصاح عن الاستدامة من ISSB. يُلزم بالإفصاح عن المخاطر والفرص المتعلقة بالاستدامة التي تؤثر على القيمة.",
+    ex:"<strong>الإطار:</strong> مبني على توصيات TCFD (مجموعة العمل المعنية بالإفصاحات المالية المتعلقة بالمناخ).<br>الأبعاد: الحوكمة | الاستراتيجية | إدارة المخاطر | المقاييس والأهداف." },
+
+  { abbr:"IFRS S2", en:"Climate-related Disclosures", ar:"الإفصاحات المتعلقة بالمناخ", cat:"standard",
+    def:"يُلزم بالإفصاح عن المخاطر والفرص المتعلقة بالمناخ تحديدًا، ويشمل مخاطر التحول (التنظيمية، التقنية) والمخاطر المادية.",
+    ex:"<strong>مثال:</strong> إفصاح شركة عن تعرضها لمخاطر ارتفاع درجات الحرارة على مصانعها، أو تكاليف التحول لمصادر طاقة نظيفة." },
+
+  // ── BODIES / FRAMEWORK ───────────────────────────────────────
+  { abbr:"IASB",  en:"International Accounting Standards Board", ar:"مجلس معايير المحاسبة الدولية", cat:"exam",
+    def:"الجهة المسؤولة عن إصدار معايير IFRS ومقرها لندن. أنشئ عام 2001 ليحل محل IASC.",
+    ex:"<strong>للامتحان:</strong> IASB يُصدر المعايير | IFRS Advisory Council يُقدم المشورة | IFRS IC يُفسر المعايير." },
+
+  { abbr:"IFRS IC", en:"IFRS Interpretations Committee", ar:"لجنة تفسيرات IFRS", cat:"exam",
+    def:"لجنة تابعة لـ IASB تُصدر تفسيرات (SIC/IFRIC) لتوضيح تطبيق المعايير في الحالات الغامضة.",
+    ex:"<strong>مثال:</strong> IFRIC 23 يُوضح كيفية معالجة عدم اليقين في ضريبة الدخل." },
+
+  { abbr:"CF",    en:"Conceptual Framework", ar:"الإطار المفاهيمي", cat:"concept",
+    def:"وثيقة أساسية تُحدد أهداف التقارير المالية وخصائص المعلومات المفيدة وعناصر القوائم المالية وقواعد القياس.",
+    ex:"<strong>الخصائص الأساسية:</strong> الملاءمة (Relevance) + التمثيل الأمين (Faithful Representation)." },
+
+  // ── FINANCIAL STATEMENTS ─────────────────────────────────────
+  { abbr:"SOFP",  en:"Statement of Financial Position", ar:"قائمة المركز المالي (الميزانية)", cat:"fs",
+    def:"تُظهر أصول المنشأة والتزاماتها وحقوق ملكيتها في تاريخ معين. تُعادل المعادلة: الأصول = الخصوم + حقوق الملكية.",
+    ex:"<strong>ملاحظة:</strong> SOFP = Balance Sheet. كلا الاسمين مقبولان في IFRS." },
+
+  { abbr:"SOPL",  en:"Statement of Profit or Loss", ar:"قائمة الأرباح والخسائر", cat:"fs",
+    def:"تُظهر أداء المنشأة خلال فترة زمنية محددة: الإيرادات ناقص المصاريف = صافي الربح أو الخسارة.",
+    ex:"<strong>نموذجان للعرض:</strong> بطريقة طبيعة المصروف (raw materials, depreciation) أو بطريقة الوظيفة (cost of sales, distribution)." },
+
+  { abbr:"OCI",   en:"Other Comprehensive Income", ar:"الدخل الشامل الآخر", cat:"fs",
+    def:"بنود الدخل والمصروف التي لا تُعترف بها في الربح والخسارة مباشرة، بل تظهر ضمن حقوق الملكية.",
+    ex:"<strong>أمثلة OCI:</strong> فائض إعادة تقييم الأصول الثابتة | التغير في القيمة العادلة لأدوات الدين FVOCI | فروق الترجمة." },
+
+  { abbr:"SOCI",  en:"Statement of Comprehensive Income", ar:"قائمة الدخل الشامل", cat:"fs",
+    def:"تجمع بين SOPL وOCI في قائمة واحدة لتُظهر إجمالي التغير في صافي الأصول الناتج عن العمليات.",
+    ex:"إجمالي الدخل الشامل = صافي الربح/الخسارة + OCI" },
+
+  { abbr:"SOCE",  en:"Statement of Changes in Equity", ar:"قائمة التغيرات في حقوق الملكية", cat:"fs",
+    def:"تُوضح كيف تغيرت حقوق الملكية خلال الفترة: رأس المال + الأرباح المحتجزة + فائض إعادة التقييم + ...",
+    ex:"<strong>تشمل:</strong> صافي الربح | OCI | توزيعات الأرباح | إصدار أسهم جديدة." },
+
+  { abbr:"SOCF",  en:"Statement of Cash Flows", ar:"قائمة التدفقات النقدية", cat:"fs",
+    def:"تُصنف التدفقات النقدية الفعلية إلى ثلاثة أقسام: تشغيلية + استثمارية + تمويلية.",
+    ex:"<strong>أنشطة التشغيل:</strong> الطريقة المباشرة (إيصالات وسداد نقدي) أو الطريقة الغير مباشرة (تعديل صافي الربح)." },
+
+  // ── MEASUREMENT ─────────────────────────────────────────────
+  { abbr:"FV",    en:"Fair Value", ar:"القيمة العادلة", cat:"measure",
+    def:"السعر الذي يمكن به بيع أصل أو تسوية التزام في معاملة عادية بين أطراف مطلعة في تاريخ القياس. محددة في IFRS 13.",
+    ex:"<strong>هرم القيمة العادلة:</strong> المستوى 1 (أسعار السوق المباشرة) → 2 (مدخلات قابلة للملاحظة) → 3 (افتراضات)." },
+
+  { abbr:"AC",    en:"Amortised Cost", ar:"التكلفة المطفأة", cat:"measure",
+    def:"طريقة قياس للأدوات المالية تأخذ التكلفة الأولى وتُعدّلها بالتحصيلات والمدفوعات وإطفاء الفوائد بمعدل الفائدة الفعلي.",
+    ex:"<strong>تُستخدم لـ:</strong> القروض والسندات المُمسك بها للاستحقاق ضمن نموذج العمل HTC." },
+
+  { abbr:"EIR",   en:"Effective Interest Rate", ar:"معدل الفائدة الفعلي", cat:"measure",
+    def:"المعدل الذي يُسوّي القيمة الحالية للتدفقات النقدية المستقبلية المتوقعة مع القيمة الدفترية للأداة المالية.",
+    ex:"<strong>يختلف عن:</strong> معدل القسيمة الاسمي لأن EIR يعكس الخصم/العلاوة والتكاليف المعاملاتية." },
+
+  { abbr:"VIU",   en:"Value in Use", ar:"قيمة الاستخدام", cat:"measure",
+    def:"القيمة الحالية للتدفقات النقدية المستقبلية المتوقعة من الاستمرار في استخدام الأصل حتى نهاية عمره الإنتاجي.",
+    ex:"<strong>في IAS 36:</strong> القيمة القابلة للاسترداد = الأكبر بين (FV ناقص تكاليف البيع) و (VIU)." },
+
+  { abbr:"FVTPL", en:"Fair Value Through Profit or Loss", ar:"القيمة العادلة عبر الربح والخسارة", cat:"measure",
+    def:"فئة قياس للأدوات المالية تظهر فيها كل التغيرات في القيمة العادلة مباشرة في قائمة الأرباح والخسارة.",
+    ex:"<strong>الافتراضي لـ:</strong> الأسهم المحتفظ بها للمضاربة والأدوات المالية المشتقة." },
+
+  { abbr:"FVOCI", en:"Fair Value Through Other Comprehensive Income", ar:"القيمة العادلة عبر الدخل الشامل الآخر", cat:"measure",
+    def:"فئة قياس تظهر فيها التغيرات في القيمة العادلة ضمن OCI بدلاً من الربح والخسارة.",
+    ex:"<strong>مثال:</strong> سندات حكومية مُصنفة FVOCI تُقاس بالقيمة العادلة لكن مكاسبها/خسائرها تذهب لـ OCI." },
+
+  // ── KEY CONCEPTS ─────────────────────────────────────────────
+  { abbr:"CGU",   en:"Cash Generating Unit", ar:"وحدة توليد النقد", cat:"concept",
+    def:"أصغر مجموعة أصول يمكن تحديد تدفقاتها النقدية بشكل مستقل عن باقي المنشأة. تُستخدم في اختبار الاضمحلال IAS 36.",
+    ex:"<strong>مثال:</strong> فرع من فروع متجر تجزئة قد يكون CGU مستقل إذا كانت له تدفقات نقدية مستقلة." },
+
+  { abbr:"PPE",   en:"Property, Plant & Equipment", ar:"الممتلكات والآلات والمعدات", cat:"concept",
+    def:"الأصول الملموسة طويلة الأمد المُستخدمة في الإنتاج أو التوريد أو الإيجار أو لأغراض إدارية.",
+    ex:"<strong>نموذجان:</strong> نموذج التكلفة (تكلفة - إهلاك - اضمحلال) | نموذج إعادة التقييم (القيمة العادلة - إهلاك لاحق)." },
+
+  { abbr:"ROU",   en:"Right-of-Use Asset", ar:"أصل حق الاستخدام", cat:"concept",
+    def:"الأصل الذي يُعترف به في ميزانية المستأجر بموجب IFRS 16 ليمثل حقه في استخدام الأصل المُؤجر خلال مدة الإيجار.",
+    ex:"<strong>يُهلك على مدى:</strong> الأقصر من مدة الإيجار أو العمر الإنتاجي للأصل." },
+
+  { abbr:"NCI",   en:"Non-Controlling Interest", ar:"حقوق الأقلية / الحصص غير المسيطرة", cat:"concept",
+    def:"حصة الملكية في شركة تابعة غير المملوكة للشركة الأم. تُعرض ضمن حقوق الملكية في القوائم الموحدة.",
+    ex:"<strong>مثال:</strong> إذا امتلكت شركة أم 75% من تابعة → نسبة الـ 25% المتبقية = NCI." },
+
+  { abbr:"GW",    en:"Goodwill", ar:"الشهرة", cat:"concept",
+    def:"أصل غير ملموس ينشأ عند الاستحواذ يمثل الفرق بين مقابل الاستحواذ والقيمة العادلة للأصول الصافية المُكتسبة.",
+    ex:"<strong>مهم:</strong> الشهرة لا تُستهلك بل تخضع لاختبار الاضمحلال السنوي (IAS 36)." },
+
+  { abbr:"EPS",   en:"Earnings Per Share", ar:"ربحية السهم", cat:"sopl",
+    def:"مقياس يُظهر نصيب كل سهم عادي من صافي الربح. مُحدد في IAS 33.",
+    ex:"<strong>EPS الأساسي</strong> = صافي الربح المتاح لحملة الأسهم العادية ÷ المتوسط المرجح لعدد الأسهم." },
+
+  { abbr:"IAS 12", en:"Income Taxes", ar:"ضرائب الدخل", cat:"standard",
+    def:"يعالج ضريبة الدخل الجارية والمؤجلة، ومنشأ الفروق المؤقتة بين الأساس المحاسبي والضريبي.",
+    ex:"<strong>الفروق المؤقتة:</strong> عندما تختلف القيمة الدفترية للأصل عن أساسه الضريبي → تنشأ أصول/التزامات ضريبية مؤجلة." },
+
+  { abbr:"DTA",   en:"Deferred Tax Asset", ar:"أصل ضريبي مؤجل", cat:"concept",
+    def:"مبالغ ضريبة الدخل القابلة للاسترداد في الفترات المستقبلية الناتجة عن فروق مؤقتة قابلة للخصم أو خسائر ضريبية.",
+    ex:"<strong>ينشأ مثلاً عن:</strong> مخصص ديون مشكوك فيها معترف به محاسبيًا لكن غير مقبول ضريبيًا حتى الآن." },
+
+  { abbr:"DTL",   en:"Deferred Tax Liability", ar:"التزام ضريبي مؤجل", cat:"concept",
+    def:"مبالغ ضريبة الدخل المستحقة في الفترات المستقبلية الناتجة عن فروق مؤقتة خاضعة للضريبة.",
+    ex:"<strong>ينشأ مثلاً عن:</strong> الإهلاك المتسارع للأغراض الضريبية مقارنة بالإهلاك المحاسبي القسط الثابت." },
+
+  // ── EXAM TERMS ───────────────────────────────────────────────
+  { abbr:"MM",    en:"Materiality", ar:"الأهمية النسبية", cat:"exam",
+    def:"معلومة جوهرية إذا كان حذفها أو تشويهها يمكن أن يؤثر على قرارات مستخدمي القوائم المالية.",
+    ex:"<strong>اختبار:</strong> البند جوهري إذا كان كبيرًا بما يكفي للتأثير على قرار المستثمر أو المُقرض." },
+
+  { abbr:"P&L",   en:"Profit and Loss (Statement)", ar:"قائمة الأرباح والخسائر", cat:"exam",
+    def:"مصطلح شائع يُستخدم بدلاً من SOPL. يُظهر الأداء المالي للمنشأة خلال فترة.",
+    ex:"<strong>مرادفات في الامتحان:</strong> P&L = SOPL = Income Statement = Statement of Earnings." },
+
+  { abbr:"WN",    en:"Working Note", ar:"ورقة العمل / الملاحظة الحسابية", cat:"exam",
+    def:"في امتحانات ICAEW يُطلب عرض الحسابات بشكل منظم في ملاحظات منفصلة لنيل درجات العملية.",
+    ex:"<strong>نصيحة:</strong> حتى لو أخطأت في الرقم النهائي، تحصل على درجات جزئية إذا كانت طريقتك صحيحة في WN." },
+
+  { abbr:"MPT",   en:"Model Paper Technique / Mark-to-Pass Threshold", ar:"حد النجاح في الامتحان", cat:"exam",
+    def:"في Dip IFRS (ICAEW): الدرجة المطلوبة للنجاح 55%. يُقسم الامتحان لجزئين: متعدد الخيارات + أسئلة مقالية.",
+    ex:"<strong>توزيع الدرجات:</strong> Section A: 20 MCQ (40 درجة) | Section B: 3 أسئلة تطبيقية (60 درجة)." },
+
+  // ── INCOME STATEMENT ITEMS ────────────────────────────────────
+  { abbr:"COGS",  en:"Cost of Goods Sold", ar:"تكلفة البضاعة المباعة", cat:"sopl",
+    def:"التكلفة المباشرة للبضاعة أو الخدمة التي تم بيعها خلال الفترة. تُخصم من الإيراد للوصول لمجمل الربح.",
+    ex:"<strong>المعادلة:</strong> مخزون أول المدة + مشتريات − مخزون آخر المدة = COGS<br><strong>مجمل الربح</strong> = الإيراد − COGS" },
+
+  { abbr:"GP",    en:"Gross Profit", ar:"مجمل الربح", cat:"sopl",
+    def:"الفرق بين صافي الإيراد وتكلفة البضاعة المباعة. يقيس الكفاءة التشغيلية الأساسية قبل المصاريف العمومية.",
+    ex:"<strong>هامش مجمل الربح</strong> = (GP ÷ الإيراد) × 100%<br>مثال: إيراد 500,000 − COGS 300,000 = GP 200,000 (40%)" },
+
+  { abbr:"EBIT",  en:"Earnings Before Interest & Tax", ar:"الأرباح قبل الفائدة والضريبة", cat:"sopl",
+    def:"مقياس للربحية التشغيلية يستبعد أثر تمويل الدين وضريبة الدخل، ويعكس أداء العمليات الأساسية.",
+    ex:"<strong>EBIT</strong> = صافي الربح + مصروف الفائدة + مصروف الضريبة<br>يُسمى أحيانًا Operating Profit." },
+
+  { abbr:"EBITDA", en:"Earnings Before Interest, Tax, Depreciation & Amortisation", ar:"الأرباح قبل الفائدة والضريبة والإهلاك والاستهلاك", cat:"sopl",
+    def:"مقياس شائع للتدفق النقدي التشغيلي التقريبي، يُضيف الإهلاك والاستهلاك إلى EBIT لأنها مصاريف غير نقدية.",
+    ex:"<strong>EBITDA</strong> = EBIT + الإهلاك + الاستهلاك<br>يُستخدم كثيرًا في تقييم الشركات (مضاعف EV/EBITDA)." },
+
+  { abbr:"PBT",   en:"Profit Before Tax", ar:"الربح قبل الضريبة", cat:"sopl",
+    def:"صافي الربح قبل خصم مصروف ضريبة الدخل. يُظهر الأداء الإجمالي قبل الالتزامات الضريبية.",
+    ex:"<strong>PBT</strong> = EBIT − مصروف الفائدة الصافي<br>ثم: PBT − ضريبة الدخل = PAT (Profit After Tax)" },
+
+  { abbr:"PAT",   en:"Profit After Tax", ar:"الربح بعد الضريبة / صافي الربح", cat:"sopl",
+    def:"الربح الصافي المتبقي بعد خصم جميع المصاريف بما فيها ضريبة الدخل. هو الرقم النهائي في SOPL.",
+    ex:"<strong>PAT = Net Profit = Bottom Line</strong><br>يُوزع على المساهمين (توزيعات) أو يُحتجز (Retained Earnings)." },
+
+  // ── ACCRUALS & ADJUSTMENTS ────────────────────────────────────
+  { abbr:"Acc Exp", en:"Accrued Expenses", ar:"المصاريف المستحقة / المصاريف الآجلة", cat:"concept",
+    def:"مصاريف تكبّدتها المنشأة في الفترة الحالية لكن لم تُسدَّد نقدًا بعد. تُسجَّل كالتزام متداول في SOFP.",
+    ex:"<strong>مثال:</strong> رواتب ديسمبر تُدفع في يناير → تُسجَّل في 31/12 كـ Accrued Salaries (مصروف مدين / التزام دائن)." },
+
+  { abbr:"Prep",  en:"Prepaid Expenses", ar:"المصاريف المدفوعة مقدمًا", cat:"concept",
+    def:"مصاريف دُفعت نقدًا مسبقًا لكن لم تُستهلك بعد. تُسجَّل كأصل متداول حتى يحين وقت استهلاكها.",
+    ex:"<strong>مثال:</strong> دفع إيجار سنة كاملة في يناير → الجزء غير المستهلك في نهاية الشهر = Prepaid Rent (أصل)." },
+
+  { abbr:"Acc Rev", en:"Accrued Revenue", ar:"الإيراد المستحق / الإيراد الآجل", cat:"concept",
+    def:"إيراد تحقق (أُديت الخدمة أو نُقلت البضاعة) لكن لم يُستلم نقدًا بعد. يُسجَّل كأصل متداول.",
+    ex:"<strong>مثال:</strong> خدمة أُديت في ديسمبر والفاتورة ستُرسل في يناير → Accrued Revenue في 31/12." },
+
+  { abbr:"Def Rev", en:"Deferred Revenue", ar:"الإيراد المؤجل / الإيراد المقدَّم", cat:"concept",
+    def:"مبلغ نقدي استُلم مقدمًا من العميل لكن الخدمة أو البضاعة لم تُسلَّم بعد. يُسجَّل كالتزام.",
+    ex:"<strong>مثال:</strong> اشتراك سنوي استُلم في يناير → يُعترف بـ 1/12 شهريًا ويبقى الباقي Deferred Revenue." },
+
+  { abbr:"Dep'n", en:"Depreciation", ar:"الإهلاك", cat:"concept",
+    def:"التوزيع المنهجي لتكلفة الأصل الثابت الملموس على مدى عمره الإنتاجي. مصروف غير نقدي.",
+    ex:"<strong>طرق الإهلاك:</strong> القسط الثابت (SLM) | رصيد متناقص (DDB) | وحدات الإنتاج<br>SLM = (التكلفة − القيمة التخلصية) ÷ العمر الإنتاجي" },
+
+  { abbr:"Amort", en:"Amortisation", ar:"الاستهلاك (للأصول غير الملموسة)", cat:"concept",
+    def:"توزيع تكلفة الأصل غير الملموس المحدد العمر على مدى عمره الإنتاجي. مشابه للإهلاك لكن للأصول غير الملموسة.",
+    ex:"<strong>مثال:</strong> براءة اختراع بتكلفة 50,000 وعمرها 10 سنوات → استهلاك سنوي 5,000.<br>الشهرة (GW) لا تُستهلك." },
+
+  // ── BALANCE SHEET ITEMS ───────────────────────────────────────
+  { abbr:"CA",    en:"Current Assets", ar:"الأصول المتداولة", cat:"sofp",
+    def:"الأصول المتوقع تحويلها لنقد أو استهلاكها خلال 12 شهرًا أو دورة تشغيل واحدة أيهما أطول.",
+    ex:"<strong>أمثلة:</strong> النقدية | الذمم المدينة (AR) | المخزون | المصاريف المدفوعة مقدمًا | الأوراق المالية المتداولة." },
+
+  { abbr:"NCA",   en:"Non-Current Assets", ar:"الأصول غير المتداولة", cat:"sofp",
+    def:"الأصول طويلة الأمد غير المتوقع تحويلها لنقد خلال 12 شهرًا. تشمل PPE والأصول غير الملموسة.",
+    ex:"<strong>أمثلة:</strong> PPE | الشهرة (GW) | الأصول غير الملموسة | الاستثمارات طويلة الأجل | DTA." },
+
+  { abbr:"CL",    en:"Current Liabilities", ar:"الالتزامات المتداولة", cat:"sofp",
+    def:"الالتزامات المستحقة السداد خلال 12 شهرًا. تُعرض منفصلة عن الالتزامات غير المتداولة في SOFP.",
+    ex:"<strong>أمثلة:</strong> الذمم الدائنة (AP) | القروض قصيرة الأجل | الإيراد المؤجل | المصاريف المستحقة." },
+
+  { abbr:"NCL",   en:"Non-Current Liabilities", ar:"الالتزامات غير المتداولة", cat:"sofp",
+    def:"الالتزامات المستحقة بعد أكثر من 12 شهرًا. تشمل القروض طويلة الأجل والتزامات الإيجار وغيرها.",
+    ex:"<strong>أمثلة:</strong> سندات دين طويلة الأجل | التزامات الإيجار IFRS 16 | DTL | مخصصات طويلة الأجل." },
+
+  { abbr:"AR",    en:"Accounts Receivable", ar:"الذمم المدينة / حسابات القبض", cat:"sofp",
+    def:"المبالغ المستحقة للمنشأة من عملائها مقابل بضاعة أو خدمة سُلِّمت لكن لم تُحصَّل بعد.",
+    ex:"<strong>يُعرض في:</strong> الأصول المتداولة في SOFP. يُقاس بـ AC بعد خصم مخصص الديون المشكوك فيها." },
+
+  { abbr:"AP",    en:"Accounts Payable", ar:"الذمم الدائنة / حسابات الدفع", cat:"sofp",
+    def:"المبالغ المستحقة على المنشأة لمورديها مقابل بضاعة أو خدمة استلمتها لكن لم تدفعها بعد.",
+    ex:"<strong>يُعرض في:</strong> الالتزامات المتداولة في SOFP. يؤثر على دورة رأس المال العامل." },
+
+  { abbr:"RE",    en:"Retained Earnings", ar:"الأرباح المحتجزة", cat:"sofp",
+    def:"التراكم التاريخي لأرباح المنشأة الصافية بعد توزيع الأرباح. تُعرض ضمن حقوق الملكية في SOFP.",
+    ex:"<strong>RE آخر المدة</strong> = RE أول المدة + صافي الربح − توزيعات الأرباح." },
+
+  { abbr:"NWC",   en:"Net Working Capital", ar:"رأس المال العامل الصافي", cat:"concept",
+    def:"مقياس للسيولة قصيرة الأجل يُظهر قدرة المنشأة على تغطية التزاماتها المتداولة من أصولها المتداولة.",
+    ex:"<strong>NWC</strong> = الأصول المتداولة − الالتزامات المتداولة<br>نتيجة موجبة = وضع سيولة مريح." },
+
+  { abbr:"Inv",   en:"Inventory / Inventories", ar:"المخزون / البضاعة", cat:"sofp",
+    def:"الأصول المحتفظ بها للبيع في المسار الاعتيادي للنشاط. يُعالج بموجب IAS 2 ويُقاس بالتكلفة أو صافي القيمة القابلة للتحقق أيهما أقل.",
+    ex:"<strong>IAS 2 يسمح بـ:</strong> FIFO أو المتوسط المرجح. لا يُسمح بـ LIFO في IFRS." },
+
+  // ── RATIOS & ANALYSIS ─────────────────────────────────────────
+  { abbr:"ROE",   en:"Return on Equity", ar:"العائد على حقوق الملكية", cat:"concept",
+    def:"مقياس لكفاءة استخدام رأس مال المساهمين لتوليد الأرباح.",
+    ex:"<strong>ROE</strong> = صافي الربح ÷ متوسط حقوق الملكية × 100%<br>كلما ارتفع كان أفضل للمساهمين." },
+
+  { abbr:"ROA",   en:"Return on Assets", ar:"العائد على الأصول", cat:"concept",
+    def:"مقياس لمدى كفاءة الإدارة في استخدام أصول المنشأة لتوليد الأرباح.",
+    ex:"<strong>ROA</strong> = صافي الربح ÷ متوسط إجمالي الأصول × 100%" },
+
+  { abbr:"CR",    en:"Current Ratio", ar:"نسبة التداول", cat:"concept",
+    def:"مقياس للسيولة قصيرة الأجل يقارن الأصول المتداولة بالالتزامات المتداولة.",
+    ex:"<strong>CR</strong> = الأصول المتداولة ÷ الالتزامات المتداولة<br>المعيار المقبول عمومًا: 2:1 (لكن يختلف حسب القطاع)." },
+
+  { abbr:"QR",    en:"Quick Ratio (Acid Test)", ar:"نسبة السيولة السريعة", cat:"concept",
+    def:"مقياس للسيولة أكثر صرامة من CR لأنه يستبعد المخزون (الأقل سيولة).",
+    ex:"<strong>QR</strong> = (الأصول المتداولة − المخزون) ÷ الالتزامات المتداولة<br>المعيار المقبول: 1:1" },
+
+  { abbr:"D/E",   en:"Debt-to-Equity Ratio", ar:"نسبة الدين إلى حقوق الملكية", cat:"concept",
+    def:"مقياس للرافعة المالية يُظهر مدى اعتماد المنشأة على الاقتراض مقارنة بتمويل المساهمين.",
+    ex:"<strong>D/E</strong> = إجمالي الديون ÷ حقوق الملكية<br>نسبة مرتفعة = مخاطر مالية أعلى." },
+
+  // ── CONSOLIDATION ─────────────────────────────────────────────
+  { abbr:"CFS",   en:"Consolidated Financial Statements", ar:"القوائم المالية الموحدة", cat:"fs",
+    def:"القوائم التي تُدمج أصول والتزامات وإيرادات ومصاريف الشركة الأم وجميع شركاتها التابعة كوحدة اقتصادية واحدة.",
+    ex:"<strong>يتطلب:</strong> حذف المعاملات البينية (intercompany eliminations) والأرباح الداخلية غير المحققة." },
+
+  { abbr:"SPE",   en:"Subsidiary / Special Purpose Entity", ar:"الشركة التابعة / كيان الغرض الخاص", cat:"concept",
+    def:"Subsidiary: شركة تسيطر عليها شركة أم (ملكية > 50% عادةً). SPE: كيان أُنشئ لغرض محدد كالتمويل.",
+    ex:"<strong>السيطرة في IFRS 10:</strong> لا تعتمد فقط على نسبة الملكية بل على القدرة الفعلية على توجيه سياسات الكيان." },
+
+  { abbr:"JV",    en:"Joint Venture", ar:"المشروع المشترك", cat:"concept",
+    def:"ترتيب تعاقدي تمارس فيه طرفان أو أكثر سيطرة مشتركة على نشاط اقتصادي. يُعالج بموجب IFRS 11.",
+    ex:"<strong>طريقة المعالجة:</strong> حصة المستثمر تُدرج بطريقة حقوق الملكية (Equity Method) في قوائمه المنفصلة." },
+
+  { abbr:"Assoc", en:"Associate", ar:"الشركة الزميلة / المشاركة", cat:"concept",
+    def:"منشأة لها شركة مستثمرة تملك تأثيرًا ملموسًا عليها (عادةً 20%-50%) دون سيطرة كاملة. يُعالج بـ IAS 28.",
+    ex:"<strong>Equity Method:</strong> تُسجَّل بالتكلفة + حصة المستثمر في أرباح/خسائر الزميلة − توزيعات مستلمة." },
+
+  // ── OTHER STANDARDS ───────────────────────────────────────────
+  { abbr:"IAS 2",  en:"Inventories", ar:"المخزون", cat:"standard",
+    def:"يُحدد كيفية قياس المخزون والاعتراف به كمصروف عند البيع. القياس: الأدنى من التكلفة أو صافي القيمة القابلة للتحقق (NRV).",
+    ex:"<strong>NRV</strong> = سعر البيع المتوقع − تكاليف الإتمام والبيع. إذا NRV < التكلفة → شطب (write-down)." },
+
+  { abbr:"IAS 7",  en:"Statement of Cash Flows", ar:"قائمة التدفقات النقدية", cat:"standard",
+    def:"يُحدد متطلبات عرض قائمة التدفقات النقدية وتصنيف التدفقات إلى تشغيلية واستثمارية وتمويلية.",
+    ex:"<strong>أنشطة التمويل تشمل:</strong> إصدار أسهم | اقتراض | سداد قروض | دفع توزيعات أرباح." },
+
+  { abbr:"IAS 10", en:"Events After the Reporting Period", ar:"الأحداث بعد تاريخ التقرير", cat:"standard",
+    def:"يُميز بين الأحداث المعدِّلة (تُعدَّل القوائم) والأحداث غير المعدِّلة (تُفصَح فقط).",
+    ex:"<strong>معدِّل:</strong> إفلاس عميل رئيسي بعد تاريخ التقرير يكشف حالة موجودة قبله.<br><strong>غير معدِّل:</strong> كارثة طبيعية بعد تاريخ التقرير." },
+
+  { abbr:"IAS 37", en:"Provisions, Contingent Liabilities & Assets", ar:"المخصصات والالتزامات والأصول الطارئة", cat:"standard",
+    def:"يُحدد متى تُسجَّل المخصصات (التزام محتمل بمبلغ غير مؤكد) وكيفية الإفصاح عن الالتزامات الطارئة.",
+    ex:"<strong>شروط تسجيل المخصص:</strong> 1) التزام حالي | 2) خروج موارد محتمل | 3) يمكن تقديره بموثوقية." },
+
+  { abbr:"IAS 19", en:"Employee Benefits", ar:"مزايا الموظفين", cat:"standard",
+    def:"يُعالج مصاريف المزايا قصيرة الأجل (رواتب، إجازات) ومزايا ما بعد التوظيف (معاشات تقاعدية).",
+    ex:"<strong>نوعا خطط التقاعد:</strong> Defined Contribution (مساهمة محددة) | Defined Benefit (مزايا محددة - أكثر تعقيدًا)." },
+
+  { abbr:"IFRS 3", en:"Business Combinations", ar:"اندماجات الأعمال", cat:"standard",
+    def:"يُحدد طريقة المحاسبة عن الاندماجات (الاستحواذات). الطريقة الوحيدة المسموح بها: طريقة الشراء (Acquisition Method).",
+    ex:"<strong>الشهرة</strong> = مقابل الاستحواذ + NCI − القيمة العادلة للأصول الصافية المُكتسبة." },
+
+  { abbr:"IFRS 13", en:"Fair Value Measurement", ar:"قياس القيمة العادلة", cat:"standard",
+    def:"يُعرّف القيمة العادلة ويضع إطارًا موحدًا لقياسها عبر جميع معايير IFRS.",
+    ex:"<strong>المستوى 1:</strong> أسعار معلنة في سوق نشط.<br><strong>المستوى 2:</strong> مدخلات قابلة للملاحظة.<br><strong>المستوى 3:</strong> مدخلات غير قابلة للملاحظة (افتراضات)." },
+
+  // ── AUDIT & REPORTING ─────────────────────────────────────────
+  { abbr:"FS",    en:"Financial Statements", ar:"القوائم المالية", cat:"fs",
+    def:"مجموعة التقارير الرسمية التي تُعبّر عن الوضع المالي والأداء والتدفقات النقدية للمنشأة.",
+    ex:"<strong>تتكون من 5 قوائم:</strong> SOFP | SOPL | SOCI | SOCE | SOCF + الإيضاحات." },
+
+  { abbr:"FY",    en:"Financial Year", ar:"السنة المالية", cat:"exam",
+    def:"الفترة الزمنية (12 شهرًا عادةً) التي تُعدّ عنها المنشأة قوائمها المالية. لا تتطابق بالضرورة مع السنة الميلادية.",
+    ex:"<strong>مثال:</strong> كثير من الشركات السعودية سنتها المالية تنتهي في 31/12، لكن بعضها ينتهي في 30/6." },
+
+  { abbr:"YTD",   en:"Year-to-Date", ar:"منذ بداية السنة حتى الآن", cat:"exam",
+    def:"تراكم الأرقام من بداية السنة المالية حتى تاريخ محدد. يُستخدم في التقارير الدورية والمقارنات.",
+    ex:"<strong>مثال:</strong> YTD Revenue = إجمالي الإيراد من يناير حتى سبتمبر (9 أشهر)." },
+
+  { abbr:"Q1/Q2", en:"Quarter 1 / Quarter 2 …", ar:"الربع الأول / الثاني…", cat:"exam",
+    def:"تقسيم السنة المالية إلى أربعة أرباع كل منها 3 أشهر. يُستخدم في التقارير المالية المرحلية.",
+    ex:"<strong>Q1:</strong> يناير-مارس | <strong>Q2:</strong> أبريل-يونيو | <strong>Q3:</strong> يوليو-سبتمبر | <strong>Q4:</strong> أكتوبر-ديسمبر." },
+
+  { abbr:"B/S",   en:"Balance Sheet", ar:"الميزانية العمومية", cat:"sofp",
+    def:"الاسم التقليدي لقائمة المركز المالي (SOFP). يُظهر الأصول والخصوم وحقوق الملكية في لحظة زمنية.",
+    ex:"<strong>المعادلة الأساسية:</strong> الأصول = الخصوم + حقوق الملكية<br>(IFRS تفضل مصطلح SOFP لكن B/S مقبول)." },
+
+  { abbr:"T/O",   en:"Turnover", ar:"معدل الدوران / الإيراد", cat:"sopl",
+    def:"يُستخدم بمعنيين: 1) الإيراد الإجمالي للمنشأة. 2) معدل دوران بند معين كمعدل دوران المخزون أو الذمم.",
+    ex:"<strong>معدل دوران المخزون</strong> = COGS ÷ متوسط المخزون<br><strong>معدل دوران الذمم</strong> = الإيراد ÷ متوسط AR." },
+
+  { abbr:"CV",    en:"Carrying Value / Book Value", ar:"القيمة الدفترية", cat:"measure",
+    def:"القيمة التي يظهر بها الأصل أو الالتزام في القوائم المالية بعد خصم الإهلاك المتراكم والاضمحلال.",
+    ex:"<strong>مثال:</strong> تكلفة آلة 100,000 − إهلاك متراكم 40,000 = CV 60,000.<br>CV = Net Book Value (NBV)." },
+
+  { abbr:"NBV",   en:"Net Book Value", ar:"صافي القيمة الدفترية", cat:"measure",
+    def:"مرادف لـ CV (Carrying Value). التكلفة التاريخية للأصل مطروحًا منها الإهلاك المتراكم وخسائر الاضمحلال.",
+    ex:"<strong>NBV = CV = Carrying Amount</strong> — كلها مصطلحات تعني نفس الشيء في الامتحانات." },
+
+  { abbr:"NRV",   en:"Net Realisable Value", ar:"صافي القيمة القابلة للتحقق", cat:"measure",
+    def:"سعر البيع المقدَّر في ظروف اعتيادية مطروحًا منه التكاليف المقدَّرة لإتمام الإنتاج والبيع. يُستخدم في IAS 2.",
+    ex:"<strong>في IAS 2:</strong> المخزون يُقاس بالأدنى من (التكلفة) أو (NRV). إذا NRV أقل → شطب الفرق كمصروف." },
+
+  { abbr:"RA",    en:"Recoverable Amount", ar:"المبلغ القابل للاسترداد", cat:"measure",
+    def:"الأعلى بين القيمة العادلة مطروحًا منها تكاليف البيع (FVLCD) وقيمة الاستخدام (VIU). يُستخدم في IAS 36.",
+    ex:"<strong>اختبار الاضمحلال:</strong> إذا CV > RA → خسارة اضمحلال = CV − RA." },
+
+  { abbr:"PV",    en:"Present Value", ar:"القيمة الحالية", cat:"measure",
+    def:"القيمة الحالية لتدفق نقدي مستقبلي محسوبة بخصمه بمعدل فائدة مناسب يعكس القيمة الزمنية للنقود.",
+    ex:"<strong>PV</strong> = التدفق المستقبلي ÷ (1 + معدل الخصم)ⁿ<br>أساسية في حساب AC, VIU, وتسعير السندات." },
+];
+
+let currentFilter = 'all';
+let englishVoice = null;
+let activeBtn = null;
+
+function pickVoice() {
+  const voices = window.speechSynthesis.getVoices();
+  // فضّل صوت إنجليزي (US ثم أي إنجليزي آخر)
+  englishVoice =
+    voices.find(v => v.lang === 'en-US') ||
+    voices.find(v => v.lang && v.lang.startsWith('en')) ||
+    null;
+}
+
+if ('speechSynthesis' in window) {
+  pickVoice();
+  window.speechSynthesis.onvoiceschanged = pickVoice;
+}
+
+function speak(btn, e) {
+  e.stopPropagation();
+
+  if (!('speechSynthesis' in window)) {
+    alert('متصفحك لا يدعم خاصية النطق الصوتي. جرّب Chrome أو Edge.');
+    return;
+  }
+
+  // لو نفس الزر شغال، وقفه
+  window.speechSynthesis.cancel();
+  if (activeBtn) activeBtn.classList.remove('playing');
+
+  let text = btn.getAttribute('data-text');
+  if (btn.getAttribute('data-spell') === '1') {
+    // تهجي حرف بحرف مع فواصل لإبطاء النطق
+    text = text.split('').join(', ');
+  }
+
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'en-US';
+  utter.rate = btn.getAttribute('data-spell') === '1' ? 0.7 : 0.9;
+  if (englishVoice) utter.voice = englishVoice;
+
+  utter.onstart = () => {
+    activeBtn = btn;
+    btn.classList.add('playing');
+  };
+  utter.onend = utter.onerror = () => {
+    btn.classList.remove('playing');
+    if (activeBtn === btn) activeBtn = null;
+  };
+
+  window.speechSynthesis.speak(utter);
+}
+
+function setFilter(cat, btn) {
+  currentFilter = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function render() {
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const filtered = data.filter(d => {
+    const matchCat = currentFilter === 'all' || d.cat === currentFilter;
+    const matchQ = !q || d.abbr.toLowerCase().includes(q) || d.en.toLowerCase().includes(q) || d.ar.includes(q);
+    return matchCat && matchQ;
+  });
+
+  document.getElementById('stats').textContent = `${filtered.length} مصطلح`;
+
+  const grid = document.getElementById('grid');
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="no-results">لا توجد نتائج — جرّب بحثًا مختلفًا</div>';
+    return;
+  }
+
+  const tagMap = { standard:'معيار', concept:'مفهوم', fs:'قائمة مالية (عام)', sopl:'بند SOPL', sofp:'بند SOFP', measure:'قياس', exam:'امتحان' };
+
+  grid.innerHTML = filtered.map((d,i) => `
+    <div class="card" data-cat="${d.cat}" onclick="toggle(this)">
+      <div class="card-header">
+        <div>
+          <div class="card-title">${d.en}</div>
+          <div class="card-arabic">${d.ar}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+          <span class="tag tag-${d.cat}">${tagMap[d.cat]}</span>
+          <div class="abbr-box">${d.abbr}</div>
+          <div class="speak-btn" data-text="${d.en.replace(/"/g,'&quot;')}" onclick="speak(this, event)" title="استمع للنطق الصحيح">🔊</div>
+          <span class="arrow">▶</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <div class="speak-btn-inline" data-text="${d.en.replace(/"/g,'&quot;')}" onclick="speak(this, event)">🔊 نطق المصطلح كامل</div>
+          <div class="speak-btn-inline" data-text="${d.abbr.replace(/"/g,'&quot;')}" data-spell="1" onclick="speak(this, event)">🔤 تهجي الاختصار حرف بحرف</div>
+        </div>
+        <div class="def-label">التعريف</div>
+        <div class="def-text">${d.def}</div>
+        <div class="example-box">${d.ex}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggle(card) {
+  card.classList.toggle('expanded');
+}
+
+render();
+</script>
+</body>
+</html>
